@@ -1,11 +1,28 @@
-/* const yts = require("./yts/index.js"); */
-const ytu = require("./ytu/index.js");
-const YoutubeTranscript = require("youtube-transcript").YoutubeTranscript;
-const fastify = require('fastify')({
-    logger: true
-});
+const fastify = require('fastify')({ logger: true });
+const path = require('node:path');
 
 const { ADDRESS = 'localhost', PORT = '3000' } = process.env;
+const publicDir = path.join(__dirname, '..', 'public');
+
+/* const yts = require("./yts/index.js"); */
+const ytu = require('./ytu/index.js');
+const { YoutubeTranscript } = require('youtube-transcript');
+
+fastify.register(require('@fastify/cors'), {
+    credentials: true,
+    methods: ['GET', 'POST'],
+    origin: 'localhost',
+});
+
+
+fastify.register(require('@fastify/static'), {
+    /* constraints: { host: '127.0.0.1' }, */
+    root: publicDir,
+});
+
+fastify.get('/', async (req, reply) => {
+    return reply.sendFile('index.html');
+});
 
 const srcOptions = {
     schema: {
