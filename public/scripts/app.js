@@ -13,7 +13,7 @@ async function fetchMediaData(videoId) {
         }
 
         const thumbnailQuality = ['default','hqdefault','maxresdefault'];
-        document.getElementById('canvasWrapper').style.backgroundImage = `url(https://i.ytimg.com/vi/${videoId}/${thumbnailQuality[1]}.jpg)`;
+        document.getElementById('canvasWrapper').style.backgroundImage = `url(https://i.ytimg.com/vi/${videoId}/${thumbnailQuality[2]}.jpg)`;
 
         return data;
     } catch (error) {
