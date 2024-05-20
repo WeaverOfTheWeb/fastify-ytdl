@@ -29,7 +29,8 @@ body {
     width: 720px;
 }
 #canvasWrapper {
-    background-size: contain;
+    background-position: center;
+    background-size: cover;
     background-repeat: no-repeat;
     border-radius: 4px;
     overflow: hidden;

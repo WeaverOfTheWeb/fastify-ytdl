@@ -12,7 +12,8 @@ async function fetchMediaData(videoId) {
             throw new Error('Missing audio or video properties in the response');
         }
 
-        document.getElementById('canvasWrapper').style.backgroundImage = `url(https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg)`;
+        const thumbnailQuality = ['default','hqdefault','maxresdefault'];
+        document.getElementById('canvasWrapper').style.backgroundImage = `url(https://i.ytimg.com/vi/${videoId}/${thumbnailQuality[1]}.jpg)`;
 
         return data;
     } catch (error) {
