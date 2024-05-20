@@ -21,8 +21,43 @@ async function fetchMediaData(videoId) {
     }
 }
 
+async function fetchTranscript(videoId) {
+    if (!videoId) throw new Error('videoId must be provided!');
+
+    try {
+        const response = await fetch(`/transcript/${videoId}`);
+        
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const data = await response.json();
+        
+        if (!data.copy || !data.transcript) {
+            throw new Error('Missing copy or transcript properties in the response');
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Error fetching media data:', error);
+    }
+}
+
 window.onload = async () => {
     const { audio, video } = await fetchMediaData('ddTV12hErTc');
+    const { copy, transcript } = await fetchTranscript('ddTV12hErTc');
+
+    // Ammend transcript to desired format
+    transcript.forEach(item => {
+        // Add 'end' time field to object
+        const endTime = item.duration + item.offset;
+        item.end = Math.round(endTime * 1000) / 1000;
+
+        // Remove unwanted fields
+        delete item['duration'];
+        delete item['lang'];
+
+        // Rename 'offset' field to 'start'
+        delete Object.assign(item, { ['start']: item['offset'] })['offset'];
+    });
     
     const srcAudio = new Audio();
     const srcVideo = document.createElement('video');
