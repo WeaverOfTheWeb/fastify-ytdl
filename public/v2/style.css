@@ -83,14 +83,17 @@ body {
 #transcript {
     background: #222;
     border-radius: 50px;
-    bottom: 15px;
+    bottom: 0;
     color: white;
-    display: none;
     line-height: 1;
+    opacity: 0;
     padding: 10px 20px;
+    pointer-events: none;
     position: absolute;
+    transition: all ease-in-out .2s;
     z-index: 1;
 }
 #transcript.show {
-    display: block;
+    bottom: 20px;
+    opacity: 1;
 }
