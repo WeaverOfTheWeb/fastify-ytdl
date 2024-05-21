@@ -1,8 +1,9 @@
 const fastify = require('fastify')({ logger: true });
 const path = require('node:path');
+require('dotenv').config();
 
 const { ADDRESS = 'localhost', PORT = '3000' } = process.env;
-const publicDir = path.join(__dirname, '..', 'public');
+const publicDir = path.join(__dirname, '..', 'public', process.env.APP_VERSION);
 
 /* const yts = require("./yts/index.js"); */
 const ytu = require('./ytu/index.js');

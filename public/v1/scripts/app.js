@@ -59,10 +59,10 @@ window.onload = async () => {
         delete Object.assign(item, { ['start']: item['offset'] })['offset'];
     });
     
-    const srcAudio = null; // new Audio();
+    const srcAudio = new Audio();
     const srcVideo = document.createElement('video');
-
-    //srcAudio.src = audio;
+    
+    srcAudio.src = audio;
     srcVideo.src = video;
 
     const canvas = document.getElementById('canvasVideo');
@@ -75,7 +75,6 @@ window.onload = async () => {
     const drawVideoFrame = (x) => {
         raf = window.requestAnimationFrame(drawVideoFrame);
         ctx.drawImage(srcVideo, 0, 0, canvas.width, canvas.height);
-        /* if (x === 'loadeddata') setTimeout(clearRaf, 500); */
     };
 
     const clearRaf = () => {
@@ -83,6 +82,7 @@ window.onload = async () => {
         raf = null;
     };
 
+    // https://stackoverflow.com/a/5920749
     function htmlDecode(input){
         var e = document.createElement('div');
         e.innerHTML = input;
@@ -105,7 +105,6 @@ window.onload = async () => {
         }
     };
 
-    // srcAudio.addEventListener('loadeddata', console.log('BOOM'), false);
     srcVideo.addEventListener('play', () => {
         canvasWrapper.className = 'pause';
         if (srcAudio && srcAudio?.paused) srcAudio.play();
@@ -137,7 +136,9 @@ window.onload = async () => {
         if (srcVideo.paused) {
             return srcVideo.play();
         }
+        
         srcVideo.pause();
+        
         console.log({
             audioCurrentTime: srcAudio?.currentTime,
             videoCurrentTime: srcVideo.currentTime,
