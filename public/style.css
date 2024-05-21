@@ -14,7 +14,9 @@ body {
     background: #eee;
     color: #111;
     display: flex;
+    flex-direction: column;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    gap: 1em;
     justify-content: center;
 }
 
@@ -29,10 +31,13 @@ body {
     width: 720px;
 }
 #canvasWrapper {
+    align-items: end;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
     border-radius: 4px;
+    display: flex;
+    justify-content: center;
     overflow: hidden;
 }
 #canvasWrapper:hover::before {
@@ -66,7 +71,17 @@ body {
     width: 720px;
 }
 
-#srcVideo {
-    visibility: hidden;
-    width: 1px;
+#transcript {
+    background: #222;
+    border-radius: 50px;
+    bottom: 15px;
+    color: white;
+    display: none;
+    line-height: 1;
+    padding: 10px 20px;
+    position: absolute;
+    z-index: 1;
+}
+#transcript.show {
+    display: block;
 }

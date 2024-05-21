@@ -59,15 +59,17 @@ window.onload = async () => {
         delete Object.assign(item, { ['start']: item['offset'] })['offset'];
     });
     
-    const srcAudio = new Audio();
+    const srcAudio = null; // new Audio();
     const srcVideo = document.createElement('video');
 
-    srcAudio.src = audio;
+    //srcAudio.src = audio;
     srcVideo.src = video;
 
     const canvas = document.getElementById('canvasVideo');
     const canvasWrapper = document.getElementById('canvasWrapper');
     const ctx = canvas.getContext('2d');
+    
+    let lastTranscript = '';
     let raf = null;
 
     const drawVideoFrame = (x) => {
@@ -81,10 +83,32 @@ window.onload = async () => {
         raf = null;
     };
 
+    function htmlDecode(input){
+        var e = document.createElement('div');
+        e.innerHTML = input;
+        return e.childNodes[0].nodeValue;
+    }
+
+    const updateTranscript = () => {
+        const transcriptContainer = document.getElementById("transcript");
+        const currentTime = srcVideo.currentTime;
+        const currentTranscript = transcript.find(transcript => currentTime >= transcript.start && currentTime <= transcript.end);
+        
+        if (currentTranscript) {
+            if (lastTranscript !== currentTranscript.text) {
+                lastTranscript = currentTranscript.text;
+                transcriptContainer.innerHTML = htmlDecode(currentTranscript.text);
+                transcriptContainer.className = 'show';
+            }
+        } else {
+            transcriptContainer.className = '';
+        }
+    };
+
     // srcAudio.addEventListener('loadeddata', console.log('BOOM'), false);
     srcVideo.addEventListener('play', () => {
         canvasWrapper.className = 'pause';
-        if (srcAudio.paused) srcAudio.play();
+        if (srcAudio && srcAudio?.paused) srcAudio.play();
     }, false);
     srcVideo.addEventListener('playing', () => {
         canvasWrapper.className = 'pause';
@@ -92,19 +116,21 @@ window.onload = async () => {
     srcVideo.addEventListener('pause', () => {
         clearRaf();
         canvasWrapper.className = 'play';
-        if (!srcAudio.paused) srcAudio.pause();
+        if (srcAudio && !srcAudio?.paused) srcAudio.pause();
     }, false);
     srcVideo.addEventListener('ended', () => {
         clearRaf();
         canvasWrapper.className = 'play';
     }, false);
     srcVideo.addEventListener('timeupdate', () => {
-        if(srcAudio.readyState >= 4) {
+        drawVideoFrame();
+        updateTranscript();
+
+        if (srcAudio && srcAudio?.readyState >= 4) {
             if(Math.ceil(srcAudio.currentTime) != Math.ceil(srcVideo.currentTime)) {
                 srcAudio.currentTime = srcVideo.currentTime;
             }
         }
-        drawVideoFrame();
     }, false);
 
     canvasWrapper.onclick = () => {
@@ -113,7 +139,7 @@ window.onload = async () => {
         }
         srcVideo.pause();
         console.log({
-            audioCurrentTime: srcAudio.currentTime,
+            audioCurrentTime: srcAudio?.currentTime,
             videoCurrentTime: srcVideo.currentTime,
         });
     };
