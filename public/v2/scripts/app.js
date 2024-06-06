@@ -59,29 +59,31 @@ window.onload = async () => {
         delete Object.assign(item, { ['start']: item['offset'] })['offset'];
     });
     
-    const srcAudio = null; // new Audio();
+    const srcAudio = new Audio();; // null
     const srcVideo = document.getElementById('video'); // document.createElement('video');
     
-    //srcAudio.src = audio;
+    srcAudio.src = audio;
+    srcAudio.muted = true;
     srcVideo.src = video;
 
-    const canvas = document.getElementById('canvasVideo');
+    /* const canvas = document.getElementById('canvasVideo');
+    const ctx = canvas.getContext('2d'); */
+    const muteBtn = document.getElementById('muteAudio');
     const canvasWrapper = document.getElementById('canvasWrapper');
-    const ctx = canvas.getContext('2d');
     
     let lastTranscript = '';
     let raf = null;
 
-    const drawVideoFrame = (x) => {
+    /* const drawVideoFrame = (x) => {
         raf = window.requestAnimationFrame(drawVideoFrame);
         ctx.drawImage(srcVideo, 0, 0, canvas.width, canvas.height);
-        /* if (x === 'loadeddata') setTimeout(clearRaf, 500); */
-    };
+        // if (x === 'loadeddata') setTimeout(clearRaf, 500);
+    }; */
 
-    const clearRaf = () => {
+    /* const clearRaf = () => {
         window.cancelAnimationFrame(raf);
         raf = null;
-    };
+    }; */
 
     // https://stackoverflow.com/a/5920749
     function htmlDecode(input){
@@ -109,32 +111,37 @@ window.onload = async () => {
     // srcAudio.addEventListener('loadeddata', console.log('BOOM'), false);
     srcVideo.addEventListener('play', () => {
         canvasWrapper.className = 'pause';
-        if (srcAudio && srcAudio?.paused) srcAudio.play();
     }, false);
     srcVideo.addEventListener('playing', () => {
         canvasWrapper.className = 'pause';
     }, false);
     srcVideo.addEventListener('pause', () => {
-        clearRaf();
+        // clearRaf();
         canvasWrapper.className = 'play';
-        if (srcAudio && !srcAudio?.paused) srcAudio.pause();
+        if (srcAudio && !srcAudio?.paused && !srcAudio.muted) srcAudio.pause();
     }, false);
     srcVideo.addEventListener('ended', () => {
-        clearRaf();
+        // clearRaf();
         canvasWrapper.className = 'play';
     }, false);
     srcVideo.addEventListener('timeupdate', () => {
-        drawVideoFrame();
+        // drawVideoFrame();
         updateTranscript();
-
-        if (srcAudio && srcAudio?.readyState >= 4) {
+        if (srcAudio && srcAudio?.readyState >= 4 && !srcAudio.muted) {
             if(Math.ceil(srcAudio.currentTime) != Math.ceil(srcVideo.currentTime)) {
                 srcAudio.currentTime = srcVideo.currentTime;
             }
+            if (srcAudio?.paused) srcAudio.play();
         }
     }, false);
 
+    muteBtn.onclick = ({ target }) => {
+        srcAudio.muted = !srcAudio.muted;
+        target.className = srcAudio.muted ? 'muted' : '';
+    };
+
     canvasWrapper.onclick = () => {
+        if (document.activeElement.id === 'muteAudio') return;
         if (srcVideo.paused) {
             return srcVideo.play();
         }

@@ -97,3 +97,23 @@ body {
     bottom: 20px;
     opacity: 1;
 }
+
+#muteAudio {
+    background-color: #fff;
+    background-image: url('images/audio-unmuted.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 32px;
+    border: 2px solid #222;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px #222;
+    height: 26px;
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    width: 26px;
+    z-index: 3;
+}
+#muteAudio.muted {
+    background-image: url('images/audio-muted.svg');
+}
