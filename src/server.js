@@ -28,6 +28,7 @@ fastify.get('/', async (req, reply) => {
 const srcOptions = {
     schema: {
         params: {
+            type: 'object',
             properties: {
                 videoID: { type: 'string' },
             },
@@ -38,7 +39,12 @@ const srcOptions = {
                 properties: {
                     audio: { type: 'string' },
                     message: { type: 'string' },
-                    video: { type: 'string' },
+                    video: {
+                        // formats: { type: 'array' },
+                        high: { type: 'string' },
+                        medium: { type: 'string' },
+                        // low: { type: 'string' },
+                    },
                 },
             },
         },

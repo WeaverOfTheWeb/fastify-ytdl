@@ -62,9 +62,10 @@ window.onload = async () => {
     const srcAudio = new Audio();; // null
     const srcVideo = document.getElementById('video'); // document.createElement('video');
     
+    srcAudio.preload = 'auto';
     srcAudio.src = audio;
     srcAudio.muted = true;
-    srcVideo.src = video;
+    srcVideo.src = video.medium;
 
     /* const canvas = document.getElementById('canvasVideo');
     const ctx = canvas.getContext('2d'); */
