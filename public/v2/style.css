@@ -118,3 +118,25 @@ body {
 #muteAudio.muted {
     background-image: url('images/audio-muted.svg');
 }
+
+#captureFrame {
+    background-color: #222;
+    background-image: url(images/screenshot-icon-2.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 26px;
+    border: 0;
+    border-radius: 3px;
+    box-shadow: 0 0 0 4px #222;
+    height: 26px;
+    position: absolute;
+    right: 70px;
+    top: 25px;
+    width: 26px;
+    z-index: 3;
+}
+
+#captureFrame:hover,
+#muteAudio:hover {
+    filter: brightness(1.2);
+}

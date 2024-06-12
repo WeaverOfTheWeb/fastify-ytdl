@@ -66,14 +66,16 @@ window.onload = async () => {
     srcAudio.src = audio;
     srcAudio.muted = true;
     srcVideo.src = video.medium;
+    srcVideo.load();
 
     /* const canvas = document.getElementById('canvasVideo');
     const ctx = canvas.getContext('2d'); */
+    const captureFramBtn = document.getElementById('captureFrame');
     const muteBtn = document.getElementById('muteAudio');
     const canvasWrapper = document.getElementById('canvasWrapper');
     
     let lastTranscript = '';
-    let raf = null;
+    /* let raf = null; */
 
     /* const drawVideoFrame = (x) => {
         raf = window.requestAnimationFrame(drawVideoFrame);
@@ -110,6 +112,12 @@ window.onload = async () => {
     };
 
     // srcAudio.addEventListener('loadeddata', console.log('BOOM'), false);
+    /* srcVideo.addEventListener('canplay', ({ target }) => {
+        console.log("Video player can play!");
+    }); */
+    srcVideo.addEventListener('canplaythrough', ({ target }) => {
+        console.log("Video player has fulled loaded!");
+    });
     srcVideo.addEventListener('play', () => {
         canvasWrapper.className = 'pause';
     }, false);
@@ -136,13 +144,33 @@ window.onload = async () => {
         }
     }, false);
 
+    captureFramBtn.onclick = () => {
+        const hqVid = document.createElement('video');
+        hqVid.src = video.high;
+        hqVid.currentTime = srcVideo.currentTime;
+        hqVid.load();
+        // hqVid.addEventListener('loadedmetadata', ({ target }) => {});   
+        hqVid.addEventListener('canplay', ({ target }) => {
+            const canvas = document.getElementById('testCanvas');
+            canvas.width = target.videoWidth;
+            canvas.height = target.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(hqVid, 0, 0, canvas.width, canvas.height);
+            /* document.getElementById('test').src = canvas.toDataURL('image/png');
+            console.log(
+                `The HQ video dimensions are ${target.videoWidth}x${target.videoHeight}\n`,
+                `The captured frame will be at ${srcVideo.currentTime}s`
+            ); */
+        });
+    };
+
     muteBtn.onclick = ({ target }) => {
         srcAudio.muted = !srcAudio.muted;
-        target.className = srcAudio.muted ? 'muted' : '';
+        target.className = srcAudio.muted ? 'btn muted' : 'btn';
     };
 
     canvasWrapper.onclick = () => {
-        if (document.activeElement.id === 'muteAudio') return;
+        if (document.activeElement.classList.contains('btn')) return;
         if (srcVideo.paused) {
             return srcVideo.play();
         }

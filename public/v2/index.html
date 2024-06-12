@@ -10,11 +10,13 @@
     </head>
     <body>
         <div id="canvasWrapper" class="play">
-            <button id="muteAudio" class="muted" title="Mute Audio"></button>
+            <button id="captureFrame" class="btn" title="Capture frame"></button>
+            <button id="muteAudio" class="btn muted" title="Mute Audio"></button>
             <div id="transcript"></div>
-            <!-- <canvas id="canvasVideo" width="720" height="360"></canvas> -->
             <video id="video" preload="auto"></video>
         </div>
+        <canvas id="testCanvas" style="height:250px"></canvas>
+        <!-- <img id="test" alt="LOL" /> -->
         <script src="scripts/app.js" async defer></script>
     </body>
 </html>

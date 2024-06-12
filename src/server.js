@@ -53,8 +53,10 @@ const srcOptions = {
 
 fastify.get('/src/:videoID', srcOptions, async (req, reply) => {
     const { videoID } = req.params;
+
     if (videoID) {
         const url = `https://www.youtube.com/watch?v=${videoID}`;
+
         try {
             const { audio, video } = await ytu(url);
             return { audio, video };
@@ -64,6 +66,7 @@ fastify.get('/src/:videoID', srcOptions, async (req, reply) => {
 
         return { message: "Something f#cked up..."}
     }
+
     return { message: "Youtube ID is missing!" };
 });
 
@@ -91,14 +94,14 @@ fastify.get('/src/:videoID', srcOptions, async (req, reply) => {
 
 fastify.get('/transcript/:videoID', async (req, reply) => {
     const { videoID } = req.params;
+
     if (videoID) {
         const transcript = await YoutubeTranscript.fetchTranscript(videoID);
         let copy = "";
-        transcript.forEach(item => {
-            copy += `${item.text} `;
-        });
+        transcript.forEach(item => copy += `${item.text} `);
         return { copy, transcript };
     }
+
     return { message: "Youtube ID is missing!" };
 });
 
