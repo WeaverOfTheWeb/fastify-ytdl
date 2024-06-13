@@ -49,6 +49,9 @@ body {
     width: 100%;
     z-index: 2;
 }
+#canvasWrapper.loading:hover::before {
+    content: 'Loading...';
+}
 #canvasWrapper.play:hover::before {
     content: 'Play';
 }
@@ -56,7 +59,8 @@ body {
     content: 'Pause';
 }
 #canvasWrapper.play:hover::before,
-#canvasWrapper.pause:hover::before {
+#canvasWrapper.pause:hover::before,
+#canvasWrapper.loading:hover::before {
     align-items: center;
     display: flex;
     font-size: 30px;
@@ -139,4 +143,15 @@ body {
 #captureFrame:hover,
 #muteAudio:hover {
     filter: brightness(1.2);
+}
+
+#testImage {
+    border: 2px solid red;
+    border-radius: 4px;
+    display: none;
+    height: 250px;
+    overflow: hidden;
+}
+#testImage.show {
+    display: block;
 }

@@ -112,9 +112,10 @@ window.onload = async () => {
     };
 
     // srcAudio.addEventListener('loadeddata', console.log('BOOM'), false);
-    /* srcVideo.addEventListener('canplay', ({ target }) => {
+    srcVideo.addEventListener('canplay', ({ target }) => {
         console.log("Video player can play!");
-    }); */
+        canvasWrapper.className = 'play';
+    });
     srcVideo.addEventListener('canplaythrough', ({ target }) => {
         console.log("Video player has fulled loaded!");
     });
@@ -145,22 +146,35 @@ window.onload = async () => {
     }, false);
 
     captureFramBtn.onclick = () => {
-        const hqVid = document.createElement('video');
-        hqVid.src = video.high;
+        let hqVid = document.createElement('video');
+        hqVid.src = 'https://cors.awreet.com/' + video.high;
+        hqVid.crossOrigin = 'Anonymous';
         hqVid.currentTime = srcVideo.currentTime;
-        hqVid.load();
-        // hqVid.addEventListener('loadedmetadata', ({ target }) => {});   
+        console.log('HQ video src and current time set');
+        // hqVid.addEventListener('error', (e) => console.log(e));
         hqVid.addEventListener('canplay', ({ target }) => {
-            const canvas = document.getElementById('testCanvas');
+            console.log('HQ video loaded and can play');
+            let canvas = document.createElement('canvas');
             canvas.width = target.videoWidth;
             canvas.height = target.videoHeight;
-            const ctx = canvas.getContext('2d');
+            
+            let ctx = canvas.getContext('2d');
             ctx.drawImage(hqVid, 0, 0, canvas.width, canvas.height);
-            /* document.getElementById('test').src = canvas.toDataURL('image/png');
-            console.log(
-                `The HQ video dimensions are ${target.videoWidth}x${target.videoHeight}\n`,
-                `The captured frame will be at ${srcVideo.currentTime}s`
-            ); */
+            console.log('HQ video frame drawn to canvas');
+            
+            const img = document.getElementById('testImage');
+            img.crossOrigin = 'Anonymous';
+            img.src = canvas.toDataURL('image/jpg');
+            img.onload = () => {
+                console.log('HQ video frame exported');
+                img.className = 'show';
+                hqVid.removeAttribute('src');
+                hqVid.load();
+                hqVid = null;
+                canvas = null;
+                ctx = null;
+                console.log('HQ video cleared');
+            };
         });
     };
 
@@ -170,7 +184,8 @@ window.onload = async () => {
     };
 
     canvasWrapper.onclick = () => {
-        if (document.activeElement.classList.contains('btn')) return;
+        const activeElmClasses = document.activeElement.classList;
+        if (activeElmClasses.contains('btn') || activeElmClasses.contains('loading')) return;
         if (srcVideo.paused) {
             return srcVideo.play();
         }
