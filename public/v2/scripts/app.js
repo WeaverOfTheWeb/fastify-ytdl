@@ -164,7 +164,7 @@ window.onload = async () => {
             
             const img = document.getElementById('testImage');
             img.crossOrigin = 'Anonymous';
-            img.src = canvas.toDataURL('image/jpg');
+            img.src = canvas.toDataURL('image/jpeg', 0.8);
             img.onload = () => {
                 console.log('HQ video frame exported');
                 img.className = 'show';
