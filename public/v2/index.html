@@ -10,9 +10,12 @@
     </head>
     <body>
         <div id="canvasWrapper" class="loading">
-            <button id="captureFrame" class="btn" title="Capture frame"></button>
             <button id="muteAudio" class="btn muted" title="Mute Audio"></button>
-            <div id="transcript"></div>
+            <button id="subtitlesBtn" class="btn on" title="Subtitles"></button>
+            <button id="captureFrame" class="btn" title="Capture frame"></button>
+            <div id="subtitles" class="on">
+                <div id="transcript"></div>
+            </div>
             <video id="video" preload="auto"></video>
         </div>
         <!-- <canvas id="testCanvas" style="height:250px"></canvas> -->

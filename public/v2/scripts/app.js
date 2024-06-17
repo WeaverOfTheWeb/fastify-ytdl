@@ -70,9 +70,11 @@ window.onload = async () => {
 
     /* const canvas = document.getElementById('canvasVideo');
     const ctx = canvas.getContext('2d'); */
-    const captureFramBtn = document.getElementById('captureFrame');
-    const muteBtn = document.getElementById('muteAudio');
     const canvasWrapper = document.getElementById('canvasWrapper');
+    const muteBtn = document.getElementById('muteAudio');
+    const subtitlesBtn = document.getElementById('subtitlesBtn');
+    const captureFramBtn = document.getElementById('captureFrame');
+    const subtitlesContainer = document.getElementById('subtitles');
     
     let lastTranscript = '';
     /* let raf = null; */
@@ -181,6 +183,16 @@ window.onload = async () => {
     muteBtn.onclick = ({ target }) => {
         srcAudio.muted = !srcAudio.muted;
         target.className = srcAudio.muted ? 'btn muted' : 'btn';
+    };
+    
+    subtitlesBtn.onclick = ({ target }) => {
+        const { classList } = target;
+        classList.toggle('on');
+        if (classList.contains('on')) {
+            subtitlesContainer.className = 'on';
+        } else {
+            subtitlesContainer.className = '';
+        }
     };
 
     canvasWrapper.onclick = () => {
