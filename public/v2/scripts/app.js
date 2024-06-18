@@ -68,6 +68,7 @@ window.onload = async () => {
         srcAudio.muted = true;
     } */
        
+    /* srcVideo.src = `${video.medium}#t=106.873609`; */
     srcVideo.preload = 'auto';
     srcVideo.src = video.medium;
     srcVideo.muted = true;
@@ -154,9 +155,8 @@ window.onload = async () => {
 
     captureFramBtn.onclick = () => {
         let hqVid = document.createElement('video');
-        hqVid.src = 'https://cors.awreet.com/' + video.high;
+        hqVid.src = `https://cors.awreet.com/${video.high}#t=${srcVideo.currentTime}`;
         hqVid.crossOrigin = 'Anonymous';
-        hqVid.currentTime = srcVideo.currentTime;
         console.log('HQ video src and current time set');
         // hqVid.addEventListener('error', (e) => console.log(e));
         hqVid.addEventListener('canplay', ({ target }) => {
