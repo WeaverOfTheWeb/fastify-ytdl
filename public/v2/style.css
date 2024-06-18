@@ -11,7 +11,7 @@ body, html {
 
 body {
     align-items: center;
-    background: #eee;
+    background: #e8eaed;
     color: #111;
     display: flex;
     flex-direction: column;
@@ -33,8 +33,9 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     border-radius: 4px;
+    box-shadow: 0 2px 4 0 rgba(0,0,0,.1);
     display: flex;
-    height: 361px;
+    /* height: 361px; */
     justify-content: center;
     overflow: hidden;
 }
@@ -49,14 +50,29 @@ body {
     width: 100%;
     z-index: 2;
 }
-#canvasWrapper.loading:hover::before {
-    content: 'Loading...';
+#canvasWrapper.loading::before {
+    background-color: rgba(0,0,0,.5);
+    background-image: url('images/downloading.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100px;
+    content: '';
+    height: 100%;
+    width: 100%;
 }
 #canvasWrapper.play:hover::before {
-    content: 'Play';
+    background-image: url('images/play.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100px;
+    content: '';
 }
 #canvasWrapper.pause:hover::before {
-    content: 'Pause';
+    background-image: url('images/pause.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100px;
+    content: '';
 }
 #canvasWrapper.play:hover::before,
 #canvasWrapper.pause:hover::before,
@@ -146,9 +162,9 @@ body {
     z-index: 3;
 }
 
-/* #canvasWrapper.play:hover .btn,
-#canvasWrapper.pause:hover .btn { */
-#canvasWrapper:hover .btn {
+/* #canvasWrapper:hover .btn { */
+#canvasWrapper.play:hover .btn,
+#canvasWrapper.pause:hover .btn {
     display: block;
 }
 

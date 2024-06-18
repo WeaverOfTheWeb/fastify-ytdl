@@ -8,7 +8,7 @@ async function fetchMediaData(videoId) {
         
         const data = await response.json();
         
-        if (!data.audio || !data.video) {
+        if (!data.video) { // !data.audio || 
             throw new Error('Missing audio or video properties in the response');
         }
 
@@ -42,7 +42,7 @@ async function fetchTranscript(videoId) {
 }
 
 window.onload = async () => {
-    const { audio, video } = await fetchMediaData('ddTV12hErTc');
+    const { video } = await fetchMediaData('ddTV12hErTc');
     const { copy, transcript } = await fetchTranscript('ddTV12hErTc');
 
     // Ammend transcript to desired format
@@ -59,13 +59,18 @@ window.onload = async () => {
         delete Object.assign(item, { ['start']: item['offset'] })['offset'];
     });
     
-    const srcAudio = new Audio();; // null
+    // const srcAudio = audio ? new Audio() : null; // null
     const srcVideo = document.getElementById('video'); // document.createElement('video');
     
-    srcAudio.preload = 'auto';
-    srcAudio.src = audio;
-    srcAudio.muted = true;
+    /* if (srcAudio) {
+        srcAudio.preload = 'auto';
+        srcAudio.src = audio;
+        srcAudio.muted = true;
+    } */
+       
+    srcVideo.preload = 'auto';
     srcVideo.src = video.medium;
+    srcVideo.muted = true;
     srcVideo.load();
 
     /* const canvas = document.getElementById('canvasVideo');
@@ -130,7 +135,7 @@ window.onload = async () => {
     srcVideo.addEventListener('pause', () => {
         // clearRaf();
         canvasWrapper.className = 'play';
-        if (srcAudio && !srcAudio?.paused && !srcAudio.muted) srcAudio.pause();
+        // if (srcAudio && !srcAudio?.paused && !srcAudio?.muted) srcAudio?.pause();
     }, false);
     srcVideo.addEventListener('ended', () => {
         // clearRaf();
@@ -139,12 +144,12 @@ window.onload = async () => {
     srcVideo.addEventListener('timeupdate', () => {
         // drawVideoFrame();
         updateTranscript();
-        if (srcAudio && srcAudio?.readyState >= 4 && !srcAudio.muted) {
+        /* if (srcAudio && srcAudio?.readyState >= 4 && !srcAudio?.muted) {
             if(Math.ceil(srcAudio.currentTime) != Math.ceil(srcVideo.currentTime)) {
                 srcAudio.currentTime = srcVideo.currentTime;
             }
             if (srcAudio?.paused) srcAudio.play();
-        }
+        } */
     }, false);
 
     captureFramBtn.onclick = () => {
@@ -181,8 +186,10 @@ window.onload = async () => {
     };
 
     muteBtn.onclick = ({ target }) => {
-        srcAudio.muted = !srcAudio.muted;
-        target.className = srcAudio.muted ? 'btn muted' : 'btn';
+        srcVideo.muted = !srcVideo.muted;
+        target.className = srcVideo.muted ? 'btn muted' : 'btn';
+        /* srcAudio.muted = !srcAudio.muted;
+        target.className = srcAudio.muted ? 'btn muted' : 'btn'; */
     };
     
     subtitlesBtn.onclick = ({ target }) => {
@@ -203,8 +210,8 @@ window.onload = async () => {
         }
         srcVideo.pause();
         console.log({
-            audioCurrentTime: srcAudio?.currentTime,
             videoCurrentTime: srcVideo.currentTime,
         });
+        /* audioCurrentTime: srcAudio?.currentTime, */
     };
 };

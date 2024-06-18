@@ -37,7 +37,7 @@ const srcOptions = {
         response: {
             200: {
                 properties: {
-                    audio: { type: 'string' },
+                    // audio: { type: 'string' },
                     message: { type: 'string' },
                     video: {
                         // formats: { type: 'array' },
@@ -58,8 +58,8 @@ fastify.get('/src/:videoID', srcOptions, async (req, reply) => {
         const url = `https://www.youtube.com/watch?v=${videoID}`;
 
         try {
-            const { audio, video } = await ytu(url);
-            return { audio, video };
+            const { video } = await ytu(url);
+            return { video };
         } catch (error) {
             console.error('Error retreiving URL:', error.message);
         }
