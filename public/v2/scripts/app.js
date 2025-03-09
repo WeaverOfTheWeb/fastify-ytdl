@@ -42,8 +42,15 @@ async function fetchTranscript(videoId) {
 }
 
 window.onload = async () => {
-    const { video } = await fetchMediaData('ddTV12hErTc');
-    const { copy, transcript } = await fetchTranscript('ddTV12hErTc');
+    const videoId = 'ddTV12hErTc';
+    const { video } = await fetchMediaData(videoId);
+    const { copy, transcript } = await fetchTranscript(videoId);
+
+    console.log({
+        video,
+        copy,
+        transcript,
+    });
 
     // Ammend transcript to desired format
     transcript.forEach(item => {
@@ -154,6 +161,7 @@ window.onload = async () => {
     }, false);
 
     captureFramBtn.onclick = () => {
+        console.log({ frame: `${video.high}#t=${srcVideo.currentTime}` });
         let hqVid = document.createElement('video');
         hqVid.src = `https://cors.awreet.com/${video.high}#t=${srcVideo.currentTime}`;
         hqVid.crossOrigin = 'Anonymous';

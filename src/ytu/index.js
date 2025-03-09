@@ -1,4 +1,4 @@
-const ytdl = require('ytdl-core');
+const ytdl = require("@distube/ytdl-core");
 
 async function ytu(ytUrl, quality = 'highestvideo', filter = 'videoandaudio') {
     const info = await ytdl.getInfo(ytUrl);
